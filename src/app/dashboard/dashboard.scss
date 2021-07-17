@@ -1,8 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
-$fa-font-path: "../node_modules/font-awesome/fonts";
-@import "../node_modules/font-awesome/scss/font-awesome.scss";
-
 $black: #1A1C1D;
 $grey: #D3CFBE;
 $baseColor: #232627;
@@ -65,11 +60,6 @@ $baseColor: #232627;
     background-color: $black;
     border-radius: 10px 10px;
     color: $grey;
-
-    input, select{
-        background-color: transparent;
-        color: $grey;
-    }
 
     .food{
         width: 150px; 

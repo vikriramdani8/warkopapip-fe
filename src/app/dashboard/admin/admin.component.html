@@ -1,0 +1,125 @@
+<div class="container-fluid p-0">
+    <div class="p-3 w-100" style="position: relative; float: left; background-color: #1A1C1D;">
+        <div style="cursor: pointer;" class="logo mt-1" style="float: left;">
+            Warkop Apip
+        </div>
+        <div (click)="profileClick = !profileClick;" class="profile" style="float: right;"></div>
+        <div [ngClass]="{'d-none': !profileClick}" style="color: #1A1C1D; text-align: right; padding: 10px; position: absolute; top: 60px; right: 10px; width: 140px; height: auto; background-color: #eee;">
+            <div *ngIf="alreadyLogin">
+                <span>Manage Account</span><br>
+                <span (click)="logout()">Logout</span>
+            </div>
+
+            <div *ngIf="!alreadyLogin">
+                <span (click)="modal = !modal; profileClick = !profileClick;">Login</span>
+            </div>
+        </div>
+        <div class="m-2" *ngIf="userDetail" style="float: right; color: #eee;">{{ userDetail['username'] ? userDetail['username'] : '' }}</div>
+    </div>
+
+    <div class="wrapper bg-darksedikit w-100" style="min-height: 100vh;">
+        <div class="container">
+            <div class="row pl-5 pr-5">
+
+                <div class="menu col-sm-2 p-2">
+                    <div class="menu-list p-3">
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between">
+                                <p><b>MENU</b></p>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <table class="w-100">
+                                <tr (click)="order = true; addFood = false;">
+                                    <td width="10"><i class="fa fa-angle-right"></i></td>
+                                    <td>Order</td>
+                                </tr>
+                                
+                                <tr (click)="order = false; addFood = true;">
+                                    <td width="10"><i class="fa fa-angle-right"></i></td>
+                                    <td>Add Food</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-8 p-2" >
+                    <div class="product mt-3 p-3" [ngClass]="{'d-none': !addFood}">
+                        <form [formGroup]="formFood">
+                            <div class="form-group">
+                                <label for="typeoffood">Type Of Food</label>
+                                <select formControlName="foodjenisid" type="Type of Food" class="form-control" id="typeoffood" placeholder="Type of Food">
+                                    <option value="">Type Of Food</option>
+                                    <option *ngFor="let data of listJenisFood" value="{{ data['jenisfoodid'] }}">{{ data['jenisfoodname'] }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3">
+                              <label for="foodName">Food name</label>
+                              <input formControlName="foodname" type="text" class="form-control" id="foodName" placeholder="Food Name">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="fooddesc">Food Desc</label>
+                                <input formControlName="fooddesc" type="text" class="form-control" id="fooddesc" placeholder="Food Desc">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="foodprice">Food Price</label>
+                                <input formControlName="foodprice" type="text" class="form-control" id="foodprice" placeholder="Food Price">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="stock">Stock</label>
+                                <input formControlName="stock" type="text" class="form-control" id="stock" placeholder="Stock">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="stock">Url Image</label>
+                                <input formControlName="urlimage" type="text" class="form-control" id="urlImage" placeholder="Url Image">
+                            </div>
+
+                            <button (click)="saveFood()" type="submit" class="mt-4 btn btn-primary">Save</button>
+                        </form>
+                    </div>
+
+                    <div *ngFor="let data of listOrder" class="product mt-3 p-3" [ngClass]="{'d-none': !order}">
+                        <table class="w-100 list-food mt-2">
+                            <tr *ngFor="let data2 of data['orderList']">
+                                <td width="30%" class="p-2" width="14%">
+                                    <img src="{{ data2['detail']['urlimage'] }}" alt="test">
+                                </td>
+                                <td class="p-2">
+                                    <b class="m-0" style="font-size: 20px;">{{ data2['detail'].foodname }}</b>
+                                    <p class="m-0" style="text-overflow: ellipsis;">{{ data2['detail'].fooddesc }}</p>
+                                    <p style="text-overflow: ellipsis;">Qty: {{ data2['qty'] }}</p>
+                                </td>
+                                <td width="20%" class="p-2" style="text-align: right;">
+                                    Rp. {{toRupiah(data2['price'])}}
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="w-100 list-food mt-2">
+                            <tr style="background-color: transparent; ">
+                                <td class="p-2">
+                                    <button (click)="orderComplete(data['orderList'])" class="btn btn-success" style="margin-right: 20px;">
+                                        Order Completed
+                                    </button>
+                                </td>
+                                <td width="30%" class="p-2" style="text-align: right;">
+                                    Rp. {{toRupiah(60000)}}
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

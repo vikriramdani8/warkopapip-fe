@@ -1,0 +1,206 @@
+<div class="container-fluid p-0">
+    <div class="p-3 w-100" style="position: relative; float: left; background-color: #1A1C1D;">
+        <div style="cursor: pointer;" class="logo mt-1" style="float: left;">
+            Warkop Apip
+        </div>
+        <div (click)="profileClick = !profileClick;" class="profile" style="float: right;"></div>
+        <div [ngClass]="{'d-none': !profileClick}" style="color: #1A1C1D; text-align: right; padding: 10px; position: absolute; top: 60px; right: 10px; width: 140px; height: auto; background-color: #eee;">
+            <div *ngIf="alreadyLogin">
+                <span>Manage Account</span><br>
+                <span (click)="logout()">Logout</span>
+            </div>
+
+            <div *ngIf="!alreadyLogin">
+                <span (click)="modal = !modal; profileClick = !profileClick;">Login</span>
+            </div>
+        </div>
+        <div class="m-2" *ngIf="userDetail" style="float: right; color: #eee;">{{ userDetail['username'] ? userDetail['username'] : '' }}</div>
+    </div>
+
+    <div class="modalLogin" [ngClass]="{'d-none': !modal}">
+        <div class="login" [ngClass]="{'d-none': register}">
+            <h3>Login</h3>
+
+            <div class="mt-4">
+                <form [formGroup]="formLogin" autocomplete="off">
+                    <div class="form-group text-left">
+                    <label for="exampleInputEmail1">username</label>
+                    <input formControlName="username" type="text" class="form-control" id="loginusername" placeholder="Enter Username">
+                    </div>
+
+                    <div class="form-group mt-3">
+                    <label for="password">Password</label>
+                    <input autocomplete="off" formControlName="userpassword" type="password" class="form-control" id="loginpassword" placeholder="Password">
+                    </div>
+
+                    <p (click)="register = !register" class="mt-3 text-dark" style="cursor: pointer;">Register?</p>
+                    <br>
+
+                    <div class="d-flex justify-content-between">
+                        <button (click)="modal = !modal" type="submit" class="btn btn-danger">Cancel</button>
+                        <button (click)="submitLogin()" type="submit" class="btn btn-primary mr-2">Login</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="login" [ngClass]="{'d-none': !register}">
+            <h3>Register</h3>
+
+            <div class="mt-4">
+                <form [formGroup]="formRegister">
+                    <div class="form-group mt-3">
+                        <label for="name">Name</label>
+                        <input formControlName="username" type="name" class="form-control" id="name" placeholder="Enter Name">
+                    </div>
+
+                    <div class="form-group text-left mt-3">
+                    <label for="email">Email address</label>
+                    <input formControlName="useremail" type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter email">
+                    </div>
+
+                    <div class="form-group mt-3">
+                    <label for="password">Password</label>
+                    <input formControlName="userpassword" autocomplete="off" type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="phone">Phone</label>
+                        <input formControlName="userphone" type="number" class="form-control" id="phone" placeholder="Enter phone number">
+                    </div>
+
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <button (click)="register = !register" type="submit" class="btn btn-danger">Cancel</button>
+                        <button (click)="registerAcc()" type="submit" class="btn btn-primary mr-2">Register</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="wrapper bg-darksedikit w-100">
+        <div class="container">
+            <br><br><br><br>
+            <div class="row pl-5 pr-5">
+                <div class="menu col-sm-2 p-2">
+
+                    <div class="menu-list p-3">
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between">
+                                <p><b>MENU</b></p>
+                                <i class="fa fa-cutlery mt-1 mr-2"></i>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <table class="w-100">
+                                <tr *ngFor="let data of listJenisFood">
+                                    <td width="10"><i class="fa fa-angle-right"></i></td>
+                                    <td>{{ data['jenisfoodname'] }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+    
+                <div class="col-sm-8 p-2">
+                    <!-- <div class="product p-2">
+                        <div class="d-flex justify-content-between">
+                            <div class="p-2">
+                                <i class="fa fa-star"></i> Featured Products
+                            </div>
+                            <div class="p-2"><i class="fa fa-angle-left"></i> <span class="m-2"></span> <i class="fa fa-angle-right"></i></div>
+                        </div>
+
+                        <div class="w-100 d-flex">
+                            <div class="m-2 food" *ngFor="let data of listFood">
+                                <img src="assets/images/donuts.jpg" style="width: 100%;" alt="donuts">
+                                <b>{{ data['foodname'] }}</b>
+                                <p style="font-size: 12px;">{{ data['fooddesc'] }}</p>
+
+                                <div class="d-flex justify-content-between ">
+                                    <span>
+                                        Rp. {{ toRupiah(data['foodprice']) }}
+                                    </span>
+
+                                   <i class="fa fa-plus mt-1" style="vertical-align: middle"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+                    <div class="product mt-3 p-3" *ngFor="let data of listJenisFood">
+                        <div>
+                            {{ data['jenisfoodname'] }}
+                        </div>
+
+                        <table class="w-100 list-food mt-2">
+                            <tr *ngFor="let food of filterFood(data['jenisfoodid'])">
+                                <td width="30%" class="p-2" width="14%">
+                                    <img src="{{ food['urlimage'] }}" alt="test">
+                                </td>
+                                <td width="50%" class="p-2">
+                                    <b class="m-0" style="font-size: 20px;">{{ food['foodname'] }}</b>
+                                    <p class="m-0" style="text-overflow: ellipsis;">{{ food['fooddesc'] }}</p>
+                                    <p style="text-overflow: ellipsis;">Sisa: {{ food['stock'] }}</p>
+                                </td>
+                                <td width="" class="p-2">
+                                    Rp. {{ toRupiah(food['foodprice']) }}
+                                </td>
+                                <td (click)="addToCart(food['foodid'])" class="p-2">
+                                    <i style="border: 1px solid grey; font-size: 10px;" class="p-2 fa fa-plus"></i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+    
+                <div class="col-sm-2 p-2">
+                    <div class="checkout p-3 text-center">
+                        <div class="d-flex justify-content-between">
+                            <p>MY ORDER</p><br>
+                            <i (click)="clearOrder()" class="fa fa-trash mt-1"></i>
+                        </div>
+                        
+                        <div *ngIf="orderList.length == 0" id="emptyOrder">
+                            <img width="100" src="assets/images/hamburger.png" alt="alt">
+                            <p class="mt-2">Food Empty</p>
+                        </div>
+
+                        <div *ngIf="orderList.length != 0" id="order">
+                            <table *ngFor="let data of orderList; let i = index;" class="w-100" style="border-bottom: 1px solid grey;">
+                                <tr>
+                                    <td style="text-align: left;">
+                                        <p class="m-0"><b>{{ data['name'] }} ({{ data['qty'] }})</b></p>
+                                    </td>
+                                    <td class="text-right">
+                                        <i class="fa fa-times" (click)="removeFood(i)"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pb-2" colspan="2" style="text-align: left; font-size: 13px;">
+                                        Rp. {{ toRupiah(data['harga']) }}
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                        <div *ngIf="orderList.length != 0">
+                            <p class="mt-3 mb-0">TOTAL</p>
+                            <b style="font-size: 20px;">Rp. {{ toRupiah(hargaTotal) }}</b>
+                            <br>
+                            <br>
+                        </div>
+                        <button [disabled]="orderList.length == 0" class="btn btn-success w-100" (click)="saveOrder();">Confirm Order</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+<div class="container-fluid p-0">
+    <div class="p-3 w-100" style="position: relative; float: left; background-color: #1A1C1D;">
+        <div style="cursor: pointer;" class="logo mt-1" style="float: left;">
+            Warkop Apip
+        </div>
+        <div (click)="profileClick = !profileClick;" class="profile" style="float: right;"></div>
+        <div [ngClass]="{'d-none': !profileClick}" style="color: #1A1C1D; text-align: right; padding: 10px; position: absolute; top: 60px; right: 10px; width: 140px; height: auto; background-color: #eee;">
+            <div *ngIf="alreadyLogin">
+                <span>Manage Account</span><br>
+                <span (click)="logout()">Logout</span>
+            </div>
+
+            <div *ngIf="!alreadyLogin">
+                <span (click)="modal = !modal; profileClick = !profileClick;">Login</span>
+            </div>
+        </div>
+        <div class="m-2" *ngIf="userDetail" style="float: right; color: #eee;">{{ userDetail['username'] ? userDetail['username'] : '' }}</div>
+    </div>
+
+    <div class="wrapper bg-darksedikit w-100 pb-4">
+        <div class="container">
+            <br><br><br><br>
+            
+            <table class="detail-checkout w-100">
+                <tr style="background-color: #1F2223;">
+                    <td class="p-2 fontmini" width="80%">PRODUCT</td>
+                    <td class="p-2 fontmini text-center">AMOUNT</td>
+                    <td class="p-2 fontmini text-center">TOTAL</td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let data of orderList; let i = index;" style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                    <td class="p-2"><b>{{ data['name'] }}</b></td>
+                    <td class="p-2 text-center">
+                        <b>{{ data['qty'] }}</b>
+                    </td>
+                    <td class="p-2 text-center">
+                        <b>Rp. {{ toRupiah(data['harga']) }}</b>
+                    </td>
+                    <td width="3%" class="text-center">
+                        <i (click)="removeFood(i)" class=" text-danger fa fa-times"></i>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <table class="detail-checkout w-100">
+                <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                    <td class="p-2 fontmini">Subtotal</td>
+                    <td class="p-2 fontmini text-right" style="text-align: right;">
+                        <p class="m-0">Rp. {{ toRupiah(total) }}</p>
+                    </td>
+                </tr>
+                <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                    <td class="p-2">Taxes</td>
+                    <td class="p-2 text-right" style="text-align: right;">
+                        Rp. 0
+                    </td>
+                </tr>
+                <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                    <td class="p-2"><b>TOTAL</b></td>
+                    <td class="p-2 text-right" style="text-align: right;">
+                        <b>Rp. {{ toRupiah(total) }}</b>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <div class="row text-white">
+                <div class="col-6">
+                    <table class="detail-checkout w-100">
+                        <tr style="background-color: #1F2223; border-top: 1px solid rgb(71, 71, 71);">
+                            <td class="p-2 fontmini">Service Type</td>
+                        </tr>
+                        <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                            <td class="p-2">
+                               <b>Pick Up</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+    
+                <div class="col-6">
+                    <table class="detail-checkout w-100">
+                        <tr style="background-color: #1F2223; border-top: 1px solid rgb(71, 71, 71);">
+                            <td class="p-2 fontmini">Delivery Time</td>
+                        </tr>
+                        <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                            <td class="p-2">
+                                <b>Righ Now ~ 10 mins</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+            <div class="col-12">
+                <table class="detail-checkout w-100">
+                    <tr style="background-color: #1F2223; border-top: 1px solid rgb(71, 71, 71);">
+                        <td class="p-2 fontmini">PAYMENT TYPE</td>
+                    </tr>
+                    <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                        <td class="p-2">
+                            <b>Payment at Apip (Cash Only)</b>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <br>
+            <div class="col-12">
+                <table class="detail-checkout w-100">
+                    <tr style="background-color: #1F2223; border-top: 1px solid rgb(71, 71, 71);">
+                        <td class="p-2 fontmini">ORDER NOTES</td>
+                    </tr>
+                    <tr style="background-color: #1A1C1D; border-top: 1px solid rgb(71, 71, 71);">
+                        <td class="p-2">
+                            <textarea placeholder="Please enter your notes if you wish" name="" id="" rows="5"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <button (click)="completeOrder()" class="btn btn-success mt-2 ">Complete Order</button>
+            <br><br>
+        </div>
+    </div>
+</div>
